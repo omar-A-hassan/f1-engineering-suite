@@ -62,11 +62,38 @@ def print_gear_display(gear_number):
         print("".join(row))
 
 
+def validate_gear_input(user_input):
+    """
+    Validate user input for gear selection.
+
+    Args:
+        user_input (str): Raw user input
+
+    Returns:
+        tuple: (is_valid, gear_number_or_error_message)
+    """
+    try:
+        gear = int(user_input.strip())
+        if 0 <= gear <= 8:
+            return True, gear
+        else:
+            return False, f"Invalid gear: {gear}. Please enter 0-8."
+    except ValueError:
+        return False, f"Invalid input: '{user_input}'. Please enter a number 0-8."
+
+
 def main():
     """Main function to get user input and display the gear."""
-    gear = input("Enter Gear (0-8): ")
-    # Note: Input validation will be added in a future update
-    print_gear_display(int(gear))
+    while True:
+        user_input = input("Enter Gear (0-8): ")
+        is_valid, result = validate_gear_input(user_input)
+
+        if is_valid:
+            print_gear_display(result)
+            break
+        else:
+            print(f"Error: {result}")
+            print("Try again...")
 
 
 if __name__ == "__main__":
