@@ -4,11 +4,11 @@
 A 7-segment display simulator F1 cars digital gear indicator.
 
 ## Features
-- ✅ 7-segment display simulation using 5x4 grid
-- ✅ Support for gears 0-8 (where 0 = Neutral)
-- ✅ Realistic segment-based rendering
-- ✅ Input validation with error handling (v1.1.0)
-- 🚧 Gear shift animation (upcoming v1.2.0)
+-  7-segment display simulation using 5x4 grid
+-  Support for gears 0-8 (where 0 = Neutral)
+-  Realistic segment-based rendering
+-  Input validation with error handling (v1.1.0)
+-  Gear shift animation (upcoming v1.2.0)
 
 ## Usage
 ```bash
