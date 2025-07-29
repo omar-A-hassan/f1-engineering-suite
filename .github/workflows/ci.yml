@@ -1,0 +1,48 @@
+name: F1 Engineering CI/CD Pipeline
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test-task1:
+    name: Test Gear Display (Task 1)
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v3
+      with:
+        python-version: 3.9
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pytest black flake8
+    
+    - name: Run Task 1 Unit Tests
+      run: |
+        cd task1-gear-display
+        python -m pytest tests/ -v
+    
+    - name: Code Quality Check
+      run: |
+        cd task1-gear-display
+        flake8 src/ --max-line-length=88
+        black --check src/
+  
+  deploy:
+    name: Deploy to F1 Car Systems
+    if: github.ref == 'refs/heads/main'
+    needs: test-task1
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Deploy Gear Display
+      run: |
+        echo " Deploying gear display to car systems..."
+        echo " Gear display v${{ github.sha }} deployed successfully!"
