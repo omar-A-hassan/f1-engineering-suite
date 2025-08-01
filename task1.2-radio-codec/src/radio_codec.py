@@ -119,7 +119,8 @@ class Codec:
 
             if expected_length < 0:
                 raise DecodingError(
-                    f"Negative length {expected_length} at byte position {byte_position}"
+                    f"Negative length {expected_length} at byte position "
+                    f"{byte_position}"
                 )
 
             # Calculate data boundaries in bytes
@@ -128,8 +129,9 @@ class Codec:
 
             if data_end_byte > len(encoded_bytes):
                 raise DecodingError(
-                    f"Insufficient data: expected {expected_length} bytes at position {data_start_byte}, "
-                    f"but only {len(encoded_bytes) - data_start_byte} bytes available"
+                    f"Insufficient data: expected {expected_length} bytes at "
+                    f"position {data_start_byte}, but only "
+                    f"{len(encoded_bytes) - data_start_byte} bytes available"
                 )
 
             # Extract the command bytes and decode to string
