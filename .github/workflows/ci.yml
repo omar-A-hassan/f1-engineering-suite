@@ -8,7 +8,7 @@ on:
 
 jobs:
   test-task1:
-    name: Test Gear Display & Animation (Task 1.1 & 1.2)
+    name: Test Gear Display & Animation (Task 1.1)
     runs-on: ubuntu-latest
     
     steps:
@@ -34,11 +34,39 @@ jobs:
         cd task1.1-gear-display
         flake8 src/ --max-line-length=88
         black --check src/
+
+  test-task2:
+    name: Test Radio Codec (Task 1.2)
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v3
+      with:
+        python-version: 3.9
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pytest black flake8
+    
+    - name: Run Task 1.2 Unit Tests
+      run: |
+        cd task1.2-radio-codec
+        python -m pytest tests/ -v
+    
+    - name: Code Quality Check - Task 1.2
+      run: |
+        cd task1.2-radio-codec
+        flake8 src/ --max-line-length=88
+        black --check src/
   
   deploy:
     name: Deploy to F1 Car Systems
     if: github.ref == 'refs/heads/main'
-    needs: test-task1
+    needs: [test-task1, test-task2]
     runs-on: ubuntu-latest
     
     steps:
@@ -46,4 +74,5 @@ jobs:
       run: |
         echo "Deploying F1 Engineering Suite to HMS-26 car systems..."
         echo "Task 1.1: Gear Display & Animation System"
+        echo "Task 1.2: Radio Communication Codec"
         echo "F1 Suite v${{ github.sha }} deployed successfully!"
