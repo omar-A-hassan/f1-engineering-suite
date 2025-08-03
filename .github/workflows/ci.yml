@@ -63,10 +63,38 @@ jobs:
         flake8 src/ --max-line-length=88
         black --check src/
   
+  test-task3:
+    name: Test Race Simulator (Task 1.3)
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v3
+      with:
+        python-version: 3.9
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pytest black flake8
+    
+    - name: Run Task 1.3 Unit Tests
+      run: |
+        cd task1.3-race-simulator
+        python -m pytest tests/ -v
+    
+    - name: Code Quality Check - Task 1.3
+      run: |
+        cd task1.3-race-simulator
+        flake8 src/ --max-line-length=88
+        black --check src/
+  
   deploy:
     name: Deploy to F1 Car Systems
     if: github.ref == 'refs/heads/main'
-    needs: [test-task1, test-task2]
+    needs: [test-task1, test-task2, test-task3]
     runs-on: ubuntu-latest
     
     steps:
@@ -75,4 +103,5 @@ jobs:
         echo "Deploying F1 Engineering Suite to HMS-26 car systems..."
         echo "Task 1.1: Gear Display & Animation System"
         echo "Task 1.2: Radio Communication Codec"
+        echo "Task 1.3: Race Simulator"
         echo "F1 Suite v${{ github.sha }} deployed successfully!"
