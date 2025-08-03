@@ -3,9 +3,8 @@ F1 Race Simulator main game logic.
 Implements the RaceSimulator class for turn-based racing between drivers.
 """
 
-from typing import Optional, Tuple
-from drivers import Driver, Verstappen, Mostafa
-from moves import OffensiveMove, DefensiveMove
+from typing import Optional
+from drivers import Verstappen, Mostafa
 
 
 class RaceSimulator:
@@ -78,7 +77,8 @@ class RaceSimulator:
                         return choice_num - 1
                     else:
                         print(
-                            "Cannot use this move - insufficient fuel or no uses remaining!"
+                            "Cannot use this move - insufficient fuel or "
+                            "no uses remaining!"
                         )
                 else:
                     print(f"Please enter a number between 1 and {len(moves)}")
@@ -96,21 +96,21 @@ class RaceSimulator:
         print(f"{'='*50}")
 
         # Display current stats
-        print(f"\nCurrent Stats:")
+        print("\nCurrent Stats:")
         verstappen_stats = self.verstappen.get_stats()
         mostafa_stats = self.mostafa.get_stats()
-        print(
-            f"Verstappen: Tire Health={verstappen_stats['tire_health']}, Fuel={verstappen_stats['fuel']}"
-        )
-        print(
-            f"Mostafa: Tire Health={mostafa_stats['tire_health']}, Fuel={mostafa_stats['fuel']}"
-        )
+        v_health = verstappen_stats["tire_health"]
+        v_fuel = verstappen_stats["fuel"]
+        m_health = mostafa_stats["tire_health"]
+        m_fuel = mostafa_stats["fuel"]
+        print(f"Verstappen: Tire Health={v_health}, Fuel={v_fuel}")
+        print(f"Mostafa: Tire Health={m_health}, Fuel={m_fuel}")
 
         # Check for fuel exhaustion scenarios
         if not self.current_driver.can_make_any_offensive_move():
             if not self.opponent.can_make_any_offensive_move():
                 # Both players stuck - determine winner by resources
-                print(f"\nBoth drivers are out of fuel!")
+                print("\nBoth drivers are out of fuel!")
                 print("Determining winner by remaining resources...")
                 return self._determine_winner_by_resources()
             else:
@@ -124,7 +124,8 @@ class RaceSimulator:
                 # Check if penalty caused elimination
                 if not self.current_driver.is_alive():
                     print(
-                        f"{self.current_driver.name} eliminated by fuel exhaustion penalty!"
+                        f"{self.current_driver.name} eliminated by fuel "
+                        "exhaustion penalty!"
                     )
                     return False
 
@@ -133,8 +134,10 @@ class RaceSimulator:
 
         # Display fuel warning if critical
         if self.current_driver.fuel <= 50:
+            fuel_remaining = self.current_driver.fuel
             print(
-                f"\n⚠️  FUEL CRITICAL for {self.current_driver.name}! ({self.current_driver.fuel} remaining)"
+                f"\n⚠️  FUEL CRITICAL for {self.current_driver.name}! "
+                f"({fuel_remaining} remaining)"
             )
 
         # Get offensive move from current driver
@@ -153,7 +156,8 @@ class RaceSimulator:
             return False
 
         print(
-            f"\n{self.current_driver.name} used {chosen_offensive.name} - {chosen_offensive.description}"
+            f"\n{self.current_driver.name} used {chosen_offensive.name} - "
+            f"{chosen_offensive.description}"
         )
 
         # Get defensive response from opponent
@@ -163,7 +167,6 @@ class RaceSimulator:
         ]
 
         final_damage = base_damage
-        defense_used = None
 
         if available_defensive:
             print(f"\n{self.opponent.name} can respond defensively:")
@@ -178,7 +181,6 @@ class RaceSimulator:
 
                 if damage_reduction is not None:
                     final_damage = int(base_damage * (1 - damage_reduction))
-                    defense_used = chosen_defensive
                     print(f"{self.opponent.name} defended with {chosen_defensive.name}")
 
         # Apply damage
@@ -188,12 +190,12 @@ class RaceSimulator:
         # Display updated stats
         verstappen_stats = self.verstappen.get_stats()
         mostafa_stats = self.mostafa.get_stats()
-        print(
-            f"Verstappen: Tire Health={verstappen_stats['tire_health']}, Fuel={verstappen_stats['fuel']}"
-        )
-        print(
-            f"Mostafa: Tire Health={mostafa_stats['tire_health']}, Fuel={mostafa_stats['fuel']}"
-        )
+        v_health = verstappen_stats["tire_health"]
+        v_fuel = verstappen_stats["fuel"]
+        m_health = mostafa_stats["tire_health"]
+        m_fuel = mostafa_stats["fuel"]
+        print(f"Verstappen: Tire Health={v_health}, Fuel={v_fuel}")
+        print(f"Mostafa: Tire Health={m_health}, Fuel={m_fuel}")
 
         # Check for winner
         if not self.opponent.is_alive():
@@ -215,13 +217,13 @@ class RaceSimulator:
         fuel_diff = abs(verstappen_stats["fuel"] - mostafa_stats["fuel"])
         tire_diff = abs(verstappen_stats["tire_health"] - mostafa_stats["tire_health"])
 
-        print(f"\nResource Comparison:")
-        print(
-            f"Verstappen: {verstappen_stats['fuel']} fuel, {verstappen_stats['tire_health']} tire health"
-        )
-        print(
-            f"Mostafa: {mostafa_stats['fuel']} fuel, {mostafa_stats['tire_health']} tire health"
-        )
+        print("\nResource Comparison:")
+        v_fuel = verstappen_stats["fuel"]
+        v_health = verstappen_stats["tire_health"]
+        m_fuel = mostafa_stats["fuel"]
+        m_health = mostafa_stats["tire_health"]
+        print(f"Verstappen: {v_fuel} fuel, {v_health} tire health")
+        print(f"Mostafa: {m_fuel} fuel, {m_health} tire health")
 
         # Primary comparison: fuel (if significant difference)
         if fuel_diff >= 10:
@@ -275,13 +277,13 @@ class RaceSimulator:
 
         print(f"Winner: {winner}")
         print(f"Reason: {reason}")
-        print(f"\nFinal Race Statistics:")
-        print(
-            f"Verstappen: Tire Health={verstappen_stats['tire_health']}, Fuel={verstappen_stats['fuel']}"
-        )
-        print(
-            f"Mostafa: Tire Health={mostafa_stats['tire_health']}, Fuel={mostafa_stats['fuel']}"
-        )
+        print("\nFinal Race Statistics:")
+        v_health = verstappen_stats["tire_health"]
+        v_fuel = verstappen_stats["fuel"]
+        m_health = mostafa_stats["tire_health"]
+        m_fuel = mostafa_stats["fuel"]
+        print(f"Verstappen: Tire Health={v_health}, Fuel={v_fuel}")
+        print(f"Mostafa: Tire Health={m_health}, Fuel={m_fuel}")
 
     def start_race(self) -> None:
         """Start the main race loop."""

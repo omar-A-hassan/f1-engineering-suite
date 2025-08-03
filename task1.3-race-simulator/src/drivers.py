@@ -109,7 +109,8 @@ class Driver(ABC):
             move: DefensiveMove to execute
 
         Returns:
-            Damage reduction percentage if move was executed, None if move couldn't be used
+            Damage reduction percentage if move was executed,
+            None if move couldn't be used
         """
         if not move.can_use(self._fuel):
             return None
@@ -146,7 +147,8 @@ class Verstappen(Driver):
                 45,
                 12,
                 None,
-                "Drag Reduction System, allows drivers to temporarily increase straight-line speed",
+                "Drag Reduction System, allows drivers to temporarily "
+                "increase straight-line speed",
             ),
             OffensiveMove(
                 "Red Bull Surge",
@@ -177,7 +179,8 @@ class Verstappen(Driver):
                 40,
                 0.50,
                 3,
-                "Deploys electric recovery system defensively to absorb incoming pressure and recover next turn",
+                "Deploys electric recovery system defensively to absorb "
+                "incoming pressure and recover next turn",
             ),
         ]
 
@@ -222,14 +225,16 @@ class Mostafa(Driver):
                 20,
                 0.40,
                 None,
-                "Cuts into the airflow behind the leading car to reduce their advantage and limit damage",
+                "Cuts into the airflow behind the leading car to reduce "
+                "their advantage and limit damage",
             ),
             DefensiveMove(
                 "Aggressive Block",
                 35,
                 1.00,
                 2,
-                "Swerves defensively to completely block a single incoming move. Can only be used once due to risk",
+                "Swerves defensively to completely block a single incoming "
+                "move. Can only be used once due to risk",
             ),
         ]
 
